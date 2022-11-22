@@ -5,4 +5,4 @@ UNION ALL
 SELECT DISTINCT 'least expensive' AS feature, title, year
 FROM movies
 WHERE  movies.budget = (SELECT MIN(movies.budget) FROM movies))
-ORDER BY feature, title, year
+ORDER BY feature, title, year;
