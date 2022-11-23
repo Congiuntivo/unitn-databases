@@ -1,7 +1,7 @@
 # Database Initialization
 - ## [This repository](https://github.com/matteobregola/DatabaseInitialization)
 - - [This script](https://github.com/matteobregola/DatabaseInitialization/blob/main/database_init.sql)
-###### The previous script (2022-11-18): 
+###### The script with test cases too (2022-11-23): 
 ```SQL:
 
 INSERT INTO public.directors (director, yearofbirth) VALUES ('Woody Allen', 1935);
