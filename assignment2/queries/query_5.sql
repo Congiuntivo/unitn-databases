@@ -7,7 +7,7 @@ WITH
         (
             SELECT title, year, COUNT(movieawards.title) as won FROM movieawards WHERE movieawards.result = 'won' GROUP BY title, year
         )
-SELECT movies.title, movies.year,
+SELECT DISTINCT movies.title, movies.year,
        CASE
         WHEN won IS NOT NULL AND nominated IS NOT NULL THEN ROUND(ROUND(won,2)/(ROUND(won,2)+ROUND(nominated,2)),2)
         WHEN won IS NULL AND nominated IS NULL THEN -1
