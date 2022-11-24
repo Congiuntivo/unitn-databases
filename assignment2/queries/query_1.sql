@@ -10,3 +10,4 @@ ORDER BY min, max, avg;
 
 /* Bro teoricamente devi fare 
 ORDER BY directorS.director, min, max, avg;
+*/
