@@ -7,3 +7,6 @@ FROM directors LEFT JOIN movies ON directors.director = movies.director
 WHERE EXTRACT(YEAR FROM CURRENT_DATE) -  directors.yearofbirth > 50
 GROUP BY directors.director
 ORDER BY min, max, avg;
+
+/* Bro teoricamente devi fare 
+ORDER BY directorS.director, min, max, avg;
