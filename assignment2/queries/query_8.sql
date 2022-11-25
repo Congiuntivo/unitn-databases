@@ -15,5 +15,5 @@ SELECT
     CASE
         WHEN COUNT(*) = 0 THEN -1
         ELSE ROUND(ROUND((SELECT * FROM vinti_80),2)/COUNT(*),2)
-    END
+    END AS feature
 FROM anni_80;
