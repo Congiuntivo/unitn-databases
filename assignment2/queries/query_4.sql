@@ -8,11 +8,3 @@ INNER JOIN movieawards ON movies.title = movieawards.title and movies.year = mov
 WHERE gross > 1000000 AND EXTRACT(YEAR FROM CURRENT_DATE) - movies.year <= 5
     AND movieawards.award LIKE '%best director' AND movieawards.result = 'won')
 ORDER BY director, award, year, director;
-
-/*
-SELECT directorawards.award, directorawards.year, directors.director
-FROM directorawards INNER JOIN directors ON directorawards.director = directors.director
-	INNER JOIN movies ON directors.director = movies.director
-WHERE (date_part('year', now())) - directorawards.year <= 5 AND movies.gross > 1000000
-ORDER BY directorawards.award, directorawards.year, directors.director
-*/
