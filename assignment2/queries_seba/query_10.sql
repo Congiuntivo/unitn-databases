@@ -5,16 +5,19 @@ WITH tmp AS (SELECT DISTINCT m.year as year
                AND result = 'won'
              group by m.year, m.title
              HAVING count(*) >= 3)
-SELECT director
+SELECT DISTINCT director
 FROM directors d
 WHERE NOT EXISTS(
             (SELECT year FROM tmp)
             EXCEPT
-            ((SELECT a.year FROM directorawards a WHERE a.director = d.director AND a.result = 'won')
+            (SELECT a.year
+             FROM directorawards a
+             WHERE a.director = d.director
+               AND a.result = 'won'
              UNION
-             (SELECT a.year
-              FROM movieawards a
-                       JOIN movies m ON a.title = m.title and a.year = m.year
-              WHERE a.result = 'won'
-                AND a.award LIKE '%best director%'
-                AND m.director = d.director)))
+             SELECT a.year
+             FROM movieawards a
+                      JOIN movies m ON a.title = m.title and a.year = m.year
+             WHERE a.result = 'won'
+               AND a.award LIKE '%best director%'
+               AND m.director = d.director));

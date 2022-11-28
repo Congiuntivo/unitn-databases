@@ -1,14 +1,13 @@
-(SELECT DISTINCT MIN(movies.gross),
-                 MAX(movies.gross),
-                 ROUND(AVG(movies.gross), 2) as AVG,
-                 directors.director
- FROM directors,
-      movies
- WHERE yearofbirth > 1972
-   and movies.director = directors.director
- GROUP BY directors.director)
+(SELECT DISTINCT d.director,
+                 MIN(m.gross - m.budget),
+                 MAX(m.gross - m.budget),
+                 TRUNC(AVG(m.gross - m.budget), 2) as AVG
+ FROM directors d
+          JOIN movies m on d.director = m.director
+ WHERE EXTRACT(YEAR FROM CURRENT_DATE) - yearofbirth > 50
+ GROUP BY d.director)
 UNION
-(SELECT DISTINCT -1, -1, -1, director
+(SELECT DISTINCT director, -1, -1, -1
  FROM directors
- WHERE yearofbirth > 1972
+ WHERE EXTRACT(YEAR FROM CURRENT_DATE) - yearofbirth > 50
    AND director NOT IN (SELECT director FROM movies));
