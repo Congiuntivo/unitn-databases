@@ -1,0 +1,11 @@
+cd ./../unitn-databases/assignment2/queries/
+git pull
+zip SQL_simo00.zip query_*.sql
+cd -
+mv ./../unitn-databases/assignment2/queries/SQL_simo00.zip ./
+
+cd ./../queries 
+./zip
+cd -
+mv ./../queries/SQL_230227.zip ./
+freciagrosa
