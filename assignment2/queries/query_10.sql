@@ -1,22 +1,12 @@
-WITH tmp AS (SELECT DISTINCT m.year as year
-             FROM movieawards a
-                      JOIN movies m on m.title = a.title and m.year = a.year
-             WHERE director = 'Spielberg'
-               AND result = 'won'
-             group by m.year, m.title
-             HAVING count(*) >= 3
-             UNION
-             SELECT '2012')
-SELECT director
-FROM directors d
-WHERE NOT EXISTS(
-            (SELECT year FROM tmp)
-            EXCEPT
-            ((SELECT a.year FROM directorawards a WHERE a.director = d.director AND a.result = 'won')
-             UNION
-             (SELECT a.year
-              FROM movieawards a
-                       JOIN movies m ON a.title = m.title and a.year = m.year
-              WHERE a.result = 'won'
-                AND a.award LIKE '%best director%'
-                AND m.director = d.director)))
+WITH
+    film_spi AS
+        (
+            SELECT movies.title, movies.year, COUNT(movieawards.award) AS num
+            FROM movieawards INNER JOIN movies ON movieawards.title = movieS.title AND movieawards.year = movies.year
+            WHERE MOVIES.director = 'Spielberg' AND movieawards.result = 'won'
+            GROUP BY movies.title, movies.year
+        )
+SELECT DISTINCT director
+FROM movies INNER JOIN movieawards ON movies.title = movieawards.title AND movies.year = movieawards.year
+WHERE movieawards.award LIKE '%best director' AND movieawards.result = 'won' AND movies.year IN (SELECT film_spi.year FROM film_spi WHERE num >=3)
+ORDER BY director;
