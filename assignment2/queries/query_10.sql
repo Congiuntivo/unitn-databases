@@ -5,6 +5,7 @@ WITH
             FROM movieawards INNER JOIN movies ON movieawards.title = movieS.title AND movieawards.year = movies.year
             WHERE MOVIES.director = 'Spielberg' AND movieawards.result = 'won'
             GROUP BY movies.title, movies.year
+            HAVING COUNT(*) >= 3
         ),
     best_dir AS
         (
