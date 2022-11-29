@@ -1,0 +1,26 @@
+WITH won_awards AS
+         (SELECT m.title, m.year, count(award) as c1
+          FROM movies m
+                   LEFT JOIN movieawards m1 on m.title = m1.title
+          WHERE result = 'won'
+            AND award NOTNULL
+          GROUP BY m.title, m.year),
+     all_awards AS
+         (SELECT m.title, m.year, count(award) as c2
+          FROM movies m
+                   LEFT JOIN movieawards m1 on m.title = m1.title
+          WHERE award NOTNULL
+          GROUP BY m.title, m.year),
+     null_awards AS
+         (SELECT m.title, m.year, -1 as c3
+          FROM movies m
+                   LEFT JOIN movieawards m1 on m.title = m1.title
+          WHERE award ISNULL
+          GROUP BY m.title, m.year)
+
+SELECT w1.title, w1.year, round((c1 / c2::numeric), 2) as success_rate
+FROM won_awards w1
+         JOIN all_awards w2 ON w1.title = w2.title
+UNION ALL
+SELECT TITLE, YEAR, c3
+FROM null_awards;
