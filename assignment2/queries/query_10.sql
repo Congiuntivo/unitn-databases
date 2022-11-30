@@ -26,5 +26,5 @@ WITH
         )
 SELECT DISTINCT director
 FROM best_dir
-WHERE director NOT IN (SELECT director FROM to_avoid)
+WHERE EXISTS(SELECT * FROM film_spi) AND director NOT IN (SELECT director FROM to_avoid)
 ORDER BY director;
