@@ -6,7 +6,7 @@ WITH w AS (SELECT title,
            GROUP BY title, year)
     (SELECT DISTINCT title, year, -1.0 AS "success-rate"
      FROM movies
-     WHERE (title, year) NOT IN (SELECT title, year FROM movieawards))
+     WHERE title NOT IN (SELECT title FROM movieawards))
 UNION
 SELECT DISTINCT title, year, ROUND(CAST(won / tot AS DECIMAL), 2)
 FROM w
