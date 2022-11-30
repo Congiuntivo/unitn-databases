@@ -14,6 +14,6 @@ UNION DISTINCT
 SELECT DISTINCT award, movieawards.year, directors_i_want.director
 FROM directors_i_want INNER JOIN movies ON directors_i_want.director = movies.director
 INNER JOIN movieawards ON movies.title = movieawards.title and movies.year = movieawards.year
-WHERE gross > 1000000 AND movieawards.award LIKE '%best director%' AND movieawards.result = 'won'
+WHERE movieawards.award LIKE '%best director%' AND movieawards.result = 'won'
 )
 ORDER BY award, year, director;
