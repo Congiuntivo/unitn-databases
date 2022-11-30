@@ -7,7 +7,8 @@ WITH tmp AS (SELECT DISTINCT m.year as year
              HAVING count(*) >= 3)
 SELECT DISTINCT director
 FROM directors d
-WHERE NOT EXISTS(
+WHERE EXISTS((SELECT * FROM tmp))
+  AND NOT EXISTS(
             (SELECT year FROM tmp)
             EXCEPT
             (SELECT a.year
