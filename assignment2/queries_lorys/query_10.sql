@@ -19,4 +19,4 @@ FROM movieawards m
          JOIN years_spielberg y ON m.year = y.year
 WHERE director != 'Spielberg' AND award LIKE '%best director' AND result = 'won'
 GROUP BY director
-HAVING count(DISTINCT y.year) = (SELECT count(*) FROM years_spielberg)
+HAVING count(DISTINCT y.year) = (SELECT count(*) FROM years_spielberg);

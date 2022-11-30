@@ -19,4 +19,4 @@ SELECT CASE
            WHEN c isnull THEN -1
            ELSE round(c1 / c::numeric, 2)
            END as feature
-FROM unified
+FROM unified;

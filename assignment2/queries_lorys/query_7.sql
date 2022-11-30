@@ -27,10 +27,8 @@ WITH movieawardtable AS
           FROM unified
           WHERE yearofbirth = (SELECT max(yearofbirth)
                                FROM unified))
-SELECT *, 'oldest' as feature
+SELECT director, 'oldest' as feature
 from oldest
 UNION ALL
-SELECT *, 'youngest' as feature
-FROM youngest
-
--- manca da capire se c'è scritto oscar, best director anche nella tabella diretorawards o solo nella movieawards;
+SELECT director, 'youngest' as feature
+FROM youngest;
