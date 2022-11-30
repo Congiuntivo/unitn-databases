@@ -11,13 +11,13 @@ WITH temp AS ((SELECT d.director, yearofbirth
                WHERE award LIKE '%Oscar, best director%'
                  AND result = 'won'))
 
-    ((SELECT director, 'youngest' as feature
-      FROM temp
-      ORDER BY yearofbirth DESC
-      LIMIT 1)
+    ((SELECT d.director, 'youngest' as feature
+      FROM directors d
+               JOIN temp t ON d.director = t.director
+      WHERE d.yearofbirth = (SELECT max(yearofbirth) FROM temp))
      UNION
-     (SELECT director, 'oldest' as feature
-      FROM temp
-      ORDER BY yearofbirth
-      LIMIT 1));
+     (SELECT d.director, 'oldest' as feature
+      FROM directors d
+               JOIN temp t ON d.director = t.director
+      WHERE d.yearofbirth = (SELECT min(yearofbirth) FROM temp)));
 
