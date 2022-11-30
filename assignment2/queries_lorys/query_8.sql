@@ -16,7 +16,7 @@ WITH anni_80 AS
           FROM n_anni_80
                    CROSS JOIN n_vinti_80)
 SELECT CASE
-           WHEN c isnull THEN -1
+           WHEN c = 0 THEN -1
            ELSE round(c1 / c::numeric, 2)
            END as feature
 FROM unified;
