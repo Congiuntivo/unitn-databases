@@ -9,7 +9,7 @@ WITH years_spielberg AS
 SELECT director
 FROM directorawards d
          JOIN years_spielberg y ON d.year = y.year
-WHERE director != 'Spielberg' AND result = 'won'
+WHERE result = 'won'
 GROUP BY director
 HAVING count(DISTINCT d.year) = (SELECT count(*) FROM years_spielberg)
 UNION
