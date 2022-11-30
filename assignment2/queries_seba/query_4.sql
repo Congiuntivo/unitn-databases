@@ -13,4 +13,5 @@ FROM movieawards a
          JOIN movies m on a.title = m.title and a.year = m.year
     AND a.award LIKE '%best director%'
     AND a.result = 'won'
-    AND director IN (SELECT * FROM tmp);
+    AND director IN (SELECT * FROM tmp)
+ORDER BY award, year, director;

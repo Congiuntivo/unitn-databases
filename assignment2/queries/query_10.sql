@@ -20,7 +20,7 @@ WITH
     to_avoid AS
         (
             SELECT *
-            FROM (SELECT director FROM best_dir) AS dir CROSS JOIN (SELECT year FROM film_spi WHERE num >= 3) AS anni
+            FROM (SELECT director FROM best_dir) AS dir CROSS JOIN (SELECT year FROM film_spi) AS anni
             EXCEPT
             (SELECT * FROM best_dir)
         )

@@ -9,4 +9,4 @@ INNER JOIN movieawards ON movies.title = movieawards.title and movies.year = mov
 WHERE gross > 1000000 AND EXTRACT(YEAR FROM CURRENT_DATE) - movies.year <= 5
     AND movieawards.award LIKE '%best director' AND movieawards.result = 'won'
 )
-ORDER BY director, award, year, director;
+ORDER BY award, year, director;
