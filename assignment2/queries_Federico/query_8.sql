@@ -1,11 +1,15 @@
-WITH oscars AS (SELECT DISTINCT CAST(COUNT(aw.title) AS DECIMAL) AS won
-                FROM movieawards AS aw
-                WHERE aw.year BETWEEN 1980 AND 1989
-                  AND aw.award LIKE '%Oscar%'
-                  AND aw.result = 'won'),
-     films AS (SELECT CAST(COUNT(title) AS DECIMAL) AS total
-               FROM movies
-               WHERE year BETWEEN 1980 AND 1989)
-SELECT (CASE WHEN total = 0 THEN -1 ELSE ROUND(won / total, 2) END) AS feature
-FROM oscars,
-     films;
+WITH aw AS (SELECT DISTINCT title, year
+            FROM movieawards
+            WHERE award LIKE 'Oscar%'
+              AND result = 'won'
+              AND movieawards.year >= 1980
+              AND movieawards.year < 1990),
+     t AS (SELECT COUNT(year) AS total
+           FROM movies
+           WHERE year >= 1980
+             AND year < 1990)
+SELECT DISTINCT CASE
+                    WHEN COUNT(year) = 0 THEN -1
+                    ELSE ROUND(ROUND((SELECT COUNT(aw.year) FROM aw), 2) / (SELECT total FROM t), 2)
+                    END AS feature
+FROM aw;

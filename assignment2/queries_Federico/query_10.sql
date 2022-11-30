@@ -1,11 +1,11 @@
-WITH film_spi AS
-         (SELECT movies.title, movies.year, COUNT(movieawards.award) AS num
+WITH film AS
+         (SELECT movies.title, movies.year, COUNT(movieawards.award) AS n
           FROM movieawards
                    INNER JOIN movies ON movieawards.title = movieS.title AND movieawards.year = movies.year
           WHERE MOVIES.director = 'Spielberg'
             AND movieawards.result = 'won'
           GROUP BY movies.title, movies.year),
-     best_dir AS
+     dir AS
          (SELECT director, year
           FROM directorawards
           WHERE result = 'won'
@@ -16,13 +16,14 @@ WITH film_spi AS
                    INNER JOIN movieawards ON movies.title = movieawards.title AND movies.year = movieawards.year
           WHERE award LIKE '%best director'
             AND result = 'won'),
-     to_avoid AS
+     excluded AS
          (SELECT *
-          FROM (SELECT director FROM best_dir) AS dir
-                   CROSS JOIN (SELECT year FROM film_spi WHERE num >= 3) AS anni
+          FROM (SELECT director FROM dir) AS dir
+                   CROSS JOIN (SELECT year FROM film WHERE n >= 3) AS y
           EXCEPT
-          (SELECT * FROM best_dir))
+          (SELECT * FROM dir))
 SELECT DISTINCT director
-FROM best_dir
-WHERE director NOT IN (SELECT director FROM to_avoid)
+FROM dir
+WHERE director NOT IN (SELECT director FROM excluded)
+  AND EXISTS(SELECT * FROM film)
 ORDER BY director;
