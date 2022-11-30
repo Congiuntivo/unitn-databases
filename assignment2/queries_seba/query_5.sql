@@ -1,7 +1,7 @@
 SELECT DISTINCT title,
                 year,
                 (CASE
-                     WHEN tot = 0 THEN -1
+                     WHEN tot = 0.00 THEN -1
                      ELSE ROUND(won / tot, 2) END) as "success-rate"
 FROM (SELECT m.title,
              m.year,
