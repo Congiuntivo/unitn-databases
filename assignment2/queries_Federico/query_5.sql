@@ -1,13 +1,12 @@
-WITH w AS (SELECT title,
-                  year,
-                  SUM(CASE WHEN result = 'won' THEN 1.0 ELSE 0.0 END) AS won,
-                  COUNT(year)                                         AS tot
-           FROM movieawards
-           GROUP BY title, year)
-    (SELECT DISTINCT title, year, -1.0 AS "success-rate"
-     FROM movies
-     WHERE title NOT IN (SELECT title FROM movieawards))
-UNION
-SELECT DISTINCT title, year, ROUND(CAST(won / tot AS DECIMAL), 2)
-FROM w
-ORDER BY title, year, "success-rate";
+SELECT DISTINCT title,
+                year,
+                (CASE
+                     WHEN tot = 0.00 THEN -1
+                     ELSE ROUND(won / tot, 2) END) AS "success-rate"
+FROM (SELECT m.title,
+             m.year,
+             CAST(SUM(CASE WHEN result = 'won' THEN 1 ELSE 0 END) AS DECIMAL)     AS won,
+             CAST(SUM(CASE WHEN result IS NOT NULL THEN 1 ELSE 0 END) AS DECIMAL) AS tot
+      FROM movieawards AS aw
+               RIGHT OUTER JOIN movies AS m ON aw.title = m.title AND aw.year = m.year
+      GROUP BY m.title, m.year) AS tmp;
