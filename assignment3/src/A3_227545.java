@@ -27,7 +27,7 @@ public class A3_227545 {
 
         //POINT 1
         long time = System.currentTimeMillis();
-        command = "DROP TABLE IF EXISTS professor, course;";
+        command = "DROP TABLE IF EXISTS Professor, Course;";
         execute_statement(connection, command);
         System.out.println("Step 1 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
@@ -35,7 +35,7 @@ public class A3_227545 {
         //POINT 2
         time = System.currentTimeMillis();
         set_autocommit_and_commit(connection, false);
-        command = "CREATE TABLE professor("+
+        command = "CREATE TABLE Professor("+
                 "id int PRIMARY KEY," +
                 "name char(50) NOT NULL," +
                 "address char(50) NOT NULL," +
@@ -43,11 +43,11 @@ public class A3_227545 {
                 "department float NOT NULL" +
                 ");";
         execute_statement(connection, command);
-        command = "CREATE TABLE course(" +
+        command = "CREATE TABLE Course(" +
                 "cid char(25) PRIMARY KEY," +
                 "cname char(50) NOT NULL," +
                 "credits char(30) NOT NULL," +
-                "teacher int NOT NULL REFERENCES professor" +
+                "teacher int NOT NULL REFERENCES Professor" +
                 ");";
         execute_statement(connection, command);
         set_autocommit_and_commit(connection, true);
@@ -67,44 +67,44 @@ public class A3_227545 {
 
         //POINT 5
         time = System.currentTimeMillis();
-        command = "SELECT id FROM professor;";
+        command = "SELECT id FROM Professor;";
         print_results(execute_query(connection, command), 1);
         System.out.println("Step 5 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
         //POINT 6
         time = System.currentTimeMillis();
-        command = "UPDATE professor SET department = 1973 WHERE department = 1940;";
+        command = "UPDATE Professor SET department = 1973 WHERE department = 1940;";
         execute_statement(connection, command);
         System.out.println("Step 6 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
         //POINT 7
         time = System.currentTimeMillis();
-        command = "SELECT id, address FROM professor WHERE department = 1973;";
+        command = "SELECT id, address FROM Professor WHERE department = 1973;";
         print_results(execute_query(connection, command), 2);
         System.out.println("Step 7 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
         //POINT 8
         time = System.currentTimeMillis();
-        command = "CREATE INDEX ON professor USING btree (department)";
+        command = "CREATE INDEX ON Professor USING btree (department)";
         execute_statement(connection, command);
         System.out.println("Step 8 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
         //POINT 9
         time = System.currentTimeMillis();
-        command = "SELECT id FROM professor;";
+        command = "SELECT id FROM Professor;";
         print_results(execute_query(connection, command), 1);
         System.out.println("Step 9 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
         //POINT 10
         time = System.currentTimeMillis();
-        command = "UPDATE professor SET department = 1974 WHERE department = 1973;";
+        command = "UPDATE Professor SET department = 1974 WHERE department = 1973;";
         execute_statement(connection, command);
         System.out.println("Step 10 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
 
         //POINT 11
         time = System.currentTimeMillis();
-        command = "SELECT id, address FROM professor WHERE department = 1974;";
+        command = "SELECT id, address FROM Professor WHERE department = 1974;";
         print_results(execute_query(connection, command), 2);
         System.out.println("Step 11 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
 
@@ -139,7 +139,7 @@ public class A3_227545 {
 
     public static void insert_1m_professors(Connection connection, Iterator<Integer> professor_ids) {
         set_autocommit_and_commit(connection, false);
-        String command = "INSERT INTO professor(id, name, address, age, department) VALUES(?,?,?,?,?);";
+        String command = "INSERT INTO Professor(id, name, address, age, department) VALUES(?,?,?,?,?);";
         try {
             PreparedStatement statement = connection.prepareStatement(command);
             Iterator<String> name_salts = get_name_salts().iterator();
@@ -173,7 +173,7 @@ public class A3_227545 {
 
     public static void insert_1m_courses(Connection connection, Iterator<Integer> teacher_ids) {
         set_autocommit_and_commit(connection, false);
-        String command = "INSERT INTO course(cid, cname, credits, teacher) VALUES(?,?,?,?);";
+        String command = "INSERT INTO Course(cid, cname, credits, teacher) VALUES(?,?,?,?);";
         try {
             PreparedStatement statement = connection.prepareStatement(command);
             Iterator<Integer> ids = get_different_random_integers(0, 10*TUPLES_NUMBER).iterator();
