@@ -17,8 +17,6 @@ public class A3_227545 {
 
     final static int TUPLES_NUMBER = 1000000;
 
-    //TODO change this to 1000:int before delivery
-//    final static double TIME_MULTIPLIER = 0.001;
     final static int TIME_MULTIPLIER = 1000;
 
     public static void main(String[] args) {
@@ -126,7 +124,7 @@ public class A3_227545 {
             while (results.next()) {
                 System.err.print(results.getString(1));
                 for (int i = 2; i <= columns; i++) {
-                    System.err.print("," + results.getString(i));
+                    System.err.print(", " + results.getString(i));
                 }
                 System.err.println();
             }
@@ -249,6 +247,7 @@ public class A3_227545 {
         catch (Exception e) {
             System.err.println("Failed to connect to database");
             e.printStackTrace();
+            System.exit(1);
         }
         return database_connection;
     }
