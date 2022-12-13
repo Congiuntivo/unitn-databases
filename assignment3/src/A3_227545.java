@@ -19,6 +19,8 @@ public class A3_227545 {
 
     final static int TIME_MULTIPLIER = 1000;
 
+    final static int BATCH_SIZE = 10000;
+
     public static void main(String[] args) {
         Connection connection = connect(HOST, PORT, DB_NAME, USERNAME, PASSWORD);
         String command;
@@ -139,12 +141,26 @@ public class A3_227545 {
         set_autocommit_and_commit(connection, false);
         String command = "INSERT INTO Professor(id, name, address, age, department) VALUES(?,?,?,?,?);";
         try {
-            PreparedStatement statement = connection.prepareStatement(command);
             Iterator<String> name_salts = get_name_salts().iterator();
             Iterator<Integer> address_salts = get_different_random_integers(0, 100 * TUPLES_NUMBER).iterator();
             Iterator<Integer> ages = get_random_integers(25, 99).iterator();
             Iterator<Integer> departments = get_different_random_integers(4000, 100 * TUPLES_NUMBER).iterator();
-            for (int i = 0; i < TUPLES_NUMBER - 1; i++) {
+            for (int j = 0; j < (TUPLES_NUMBER / BATCH_SIZE) -  1; j++) {
+                PreparedStatement statement = connection.prepareStatement(command);
+                for (int i = 0; i < BATCH_SIZE; i++) {
+                    statement.setInt(1, professor_ids.next());
+                    statement.setString(2, "name-" + name_salts.next());
+                    statement.setString(3, "address-" + address_salts.next());
+                    statement.setInt(4, ages.next());
+                    statement.setFloat(5, departments.next() / (float) 2);
+                    statement.addBatch();
+                }
+                statement.executeBatch();
+                statement.close();
+                connection.commit();
+            }
+            PreparedStatement statement = connection.prepareStatement(command);
+            for (int i = 0; i < BATCH_SIZE - 1; i++) {
                 statement.setInt(1, professor_ids.next());
                 statement.setString(2, "name-" + name_salts.next());
                 statement.setString(3, "address-" + address_salts.next());
@@ -161,6 +177,7 @@ public class A3_227545 {
 
             statement.executeBatch();
             statement.close();
+            connection.commit();
         }
         catch (Exception e) {
             System.err.println("Failed to prepare statement\n" + command);
@@ -173,19 +190,22 @@ public class A3_227545 {
         set_autocommit_and_commit(connection, false);
         String command = "INSERT INTO Course(cid, cname, credits, teacher) VALUES(?,?,?,?);";
         try {
-            PreparedStatement statement = connection.prepareStatement(command);
             Iterator<Integer> ids = get_different_random_integers(0, 10*TUPLES_NUMBER).iterator();
             Iterator<String> name_salts = get_name_salts().iterator();
             Iterator<Integer> credits = get_random_integers(1, 25).iterator();
             while (ids.hasNext()) {
-                statement.setString(1, "" + ids.next());
-                statement.setString(2, "name-" + name_salts.next());
-                statement.setString(3, "" + credits.next());
-                statement.setInt(4, teacher_ids.next());
-                statement.addBatch();
+                PreparedStatement statement = connection.prepareStatement(command);
+                for (int i = 0; i < BATCH_SIZE; i++) {
+                    statement.setInt(1, ids.next());
+                    statement.setString(2, "name-" + name_salts.next());
+                    statement.setInt(3, credits.next());
+                    statement.setInt(4, teacher_ids.next());
+                    statement.addBatch();
+                }
+                statement.executeBatch();
+                statement.close();
+                connection.commit();
             }
-            statement.executeBatch();
-            statement.close();
         }
         catch (Exception e) {
             System.err.println("Failed to prepare statement:\n" + command);
