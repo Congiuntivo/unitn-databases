@@ -19,7 +19,7 @@ public class A3_227545 {
 
     final static int TIME_MULTIPLIER = 1000;
 
-    final static int BATCH_SIZE = 10000;
+    final static int BATCH_SIZE = 100000;
 
     public static void main(String[] args) {
         Connection connection = connect(HOST, PORT, DB_NAME, USERNAME, PASSWORD);
