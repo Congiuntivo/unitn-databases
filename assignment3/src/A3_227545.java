@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class A3_227545 {
 
+    // Connection constants:
 //        final static String HOST = "localhost";
     final static String HOST = "sci-didattica.unitn.it";
     final static int PORT = 5432;
@@ -15,10 +16,8 @@ public class A3_227545 {
     final static String USERNAME = "db_013";
     final static String PASSWORD = "freciagrosa";
 
+    // Script constants:
     final static int TUPLES_NUMBER = 1000000;
-
-    final static int TIME_MULTIPLIER = 1000;
-
     final static int BATCH_SIZE = 100000;
 
     public static void main(String[] args) {
@@ -26,14 +25,14 @@ public class A3_227545 {
         String command;
 
         //POINT 1
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
         command = "DROP TABLE IF EXISTS Professor, Course;";
         execute_statement(connection, command);
-        System.out.println("Step 1 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 1 needs " + (System.nanoTime() - time) + " ns");
 
 
         //POINT 2
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         set_autocommit_and_commit(connection, false);
         command = "CREATE TABLE Professor("+
                 "id int PRIMARY KEY," +
@@ -51,62 +50,62 @@ public class A3_227545 {
                 ");";
         execute_statement(connection, command);
         set_autocommit_and_commit(connection, true);
-        System.out.println("Step 2 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 2 needs " + (System.nanoTime() - time) + " ns");
 
 
         //POINT 3
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         ArrayList<Integer> professor_ids = get_different_random_integers(0, 100 * TUPLES_NUMBER);
         insert_1m_professors(connection, professor_ids.iterator());
-        System.out.println("Step 3 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 3 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 4
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         insert_1m_courses(connection, professor_ids.iterator());
-        System.out.println("Step 4 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 4 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 5
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "SELECT id FROM Professor;";
         print_results(execute_query(connection, command), 1);
-        System.out.println("Step 5 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 5 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 6
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "UPDATE Professor SET department = 1973 WHERE department = 1940;";
         execute_statement(connection, command);
-        System.out.println("Step 6 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 6 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 7
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "SELECT id, address FROM Professor WHERE department = 1973;";
         print_results(execute_query(connection, command), 2);
-        System.out.println("Step 7 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 7 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 8
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "CREATE INDEX ON Professor USING btree (department)";
         execute_statement(connection, command);
-        System.out.println("Step 8 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 8 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 9
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "SELECT id FROM Professor;";
         print_results(execute_query(connection, command), 1);
-        System.out.println("Step 9 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 9 needs " + (System.nanoTime() - time) + " ns");
 
         //POINT 10
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "UPDATE Professor SET department = 1974 WHERE department = 1973;";
         execute_statement(connection, command);
-        System.out.println("Step 10 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 10 needs " + (System.nanoTime() - time) + " ns");
 
 
         //POINT 11
-        time = System.currentTimeMillis();
+        time = System.nanoTime();
         command = "SELECT id, address FROM Professor WHERE department = 1974;";
         print_results(execute_query(connection, command), 2);
-        System.out.println("Step 11 needs " + ((System.currentTimeMillis() - time) * TIME_MULTIPLIER) + " ns");
+        System.out.println("Step 11 needs " + (System.nanoTime() - time) + " ns");
 
 
 
