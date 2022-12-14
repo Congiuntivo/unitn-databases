@@ -197,7 +197,7 @@ public class A3_227545 {
                 for (int i = 0; i < BATCH_SIZE; i++) {
                     statement.setInt(1, ids.next());
                     statement.setString(2, "name-" + name_salts.next());
-                    statement.setInt(3, credits.next());
+                    statement.setString(3, "" + credits.next());
                     statement.setInt(4, teacher_ids.next());
                     statement.addBatch();
                 }
