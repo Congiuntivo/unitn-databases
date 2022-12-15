@@ -1,11 +1,45 @@
-Step 1 needs 168000 ns
-Step 2 needs 226000 ns
-Step 3 needs 331480000 ns
-Step 4 needs 338860000 ns
-Step 5 needs 11151000 ns
-Step 6 needs 240000 ns
-Step 7 needs 306000 ns
-Step 8 needs 1148000 ns
-Step 9 needs 16981000 ns
-Step 10 needs 76000 ns
-Step 11 needs 70000 ns
+Step 1 needs 198157531 ns
+Step 2 needs 246926627 ns
+Step 3 needs 311077914215 ns
+Step 4 needs 327842028945 ns
+Step 5 needs 10462051333 ns
+Step 6 needs 215218518 ns
+Step 7 needs 355439724 ns
+Step 8 needs 1330338299 ns
+Step 9 needs 12289676997 ns
+Step 10 needs 95392657 ns
+Step 11 needs 69682915 ns
+
+Comments:
+- Step 1 and 2 take approximately the same time (about 0,2 seconds). This is
+  because both table dropping (that is essentially just deallocating the memory)
+  and table creation are very cheap operations.
+
+- Step 3 takes a lot of time (about 5 minutes). This is because tuples generation
+  and especially the insertion of the tuples into the table is a very expensive.
+  Tuples insertion time can vary a lot depending on the quantity of the connection.
+
+- Step 4 takes a lot of time (about 5 minutes). This is essentially the same
+  reason as Step 3, but we could think that this would be faster because `Course`
+  table have 1 column less than `Professor` table. This is not the case because
+  in addition to the costs specified in Step 3, foreign key constraints checking.
+
+- Step 5 takes about 10 seconds. This is because it has to retrieve 1 million
+  integers from the table.
+
+- Step 6 takes about 0,2 seconds because it has just to search in 1 million
+  departments and update some of them.
+
+- Step 7 takes about 0,35 seconds. This is for the same reason as Step 6 with
+  the difference that it has not to update anything, but it has to retrieve
+  2 fields from the table, that is more expensive.
+
+- Step 8 takes about 1 second. This is because it has to create a B+tree index.
+
+- Step 9 takes about 12 seconds, very similar to Step 5.
+
+- Step 10 takes about 0,1 seconds like Step 6 but quite faster because it has
+  to search in a B+tree index created on that attribute.
+
+- Step 11 takes about 0,07 seconds like Step 7 but quite faster because it has
+  to search in a B+tree index created on that attribute.

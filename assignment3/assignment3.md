@@ -36,9 +36,9 @@ are separated by comma).
 10. Updates all the tuples that have value `1973` as `department` and makes them to have a `department`
 equal to `1974` (your query should work even if there are many tuples that have value `1973` in the
 attribute `department`).
-    11. Selects from the table `Professor` and prints to the `stderr` the `id` and the `address` of the professors
-    with `department` equal to `1974` (each  `id` and `address` pair appear on its own line, and the two
-    values are separated by comma).
+11. Selects from the table `Professor` and prints to the `stderr` the `id` and the `address` of the professors
+with `department` equal to `1974` (each  `id` and `address` pair appear on its own line, and the two
+values are separated by comma).
 
 For each of the above operations you need to report (print to the stdout) the time it took to execute it.
 To do so you may keep in a variable the time before starting the execution (in nanoseconds), then get the
