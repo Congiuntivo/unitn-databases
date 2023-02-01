@@ -6,3 +6,7 @@
 # Oher
 logs.txt
 b_*k.txt
+
+# Latex stuff
+*.tex
+*.log
